@@ -1,0 +1,5 @@
+URL_PAINTINGS = '../paintings'
+
+NUM_PAINTERS = 2
+
+IMAGE_DIM = 128, 128
