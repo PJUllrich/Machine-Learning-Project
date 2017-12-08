@@ -1,43 +1,51 @@
-import os
+from keras.preprocessing.image import ImageDataGenerator
 
-from PIL import Image
-
-from config import IMAGE_DIM, NUM_PAINTERS, URL_PAINTINGS
+import config
 
 
 class DataProvider:
     @classmethod
-    def get_data(cls):
-        return cls._map_painters_paintings()
+    def get_generators(cls):
+        train_gen = cls._get_train_gen()
+        test_gen = cls._get_test_gen()
+
+        return train_gen, test_gen
 
     @classmethod
-    def _map_painters_paintings(cls):
-        painters = cls._get_painters()
-        painters_set = painters[:NUM_PAINTERS]
-        map_pp = [(painter, cls._get_paintings(painter)) for painter in painters_set]
-        return sorted(map_pp, key=lambda pair: len(pair[1]), reverse=True)
+    def _get_train_gen(cls):
+        generator = cls.data_train_generator()
+        return generator.flow_from_directory(
+            config.URL_PAINTINGS,
+            target_size=config.IMAGE_DIM,
+            batch_size=config.NUM_PAINTINGS
+        )
 
     @classmethod
-    def _get_painters(cls):
-        return os.listdir(URL_PAINTINGS)
+    def _get_test_gen(cls):
+        generator = cls.data_test_generator()
+        return generator.flow_from_directory(
+            config.URL_PAINTINGS,
+            target_size=config.IMAGE_DIM,
+            batch_size=config.NUM_PAINTINGS
+        )
 
     @classmethod
-    def _get_paintings(cls, painter):
-        filepaths = cls._get_filepaths(painter)
-        images = cls._get_images_cropped(filepaths)
-        return images
+    def data_train_generator(cls):
+        return ImageDataGenerator(
+            featurewise_center=True,
+            featurewise_std_normalization=True,
+            rotation_range=180,
+            zoom_range=0.2,
+            width_shift_range=0.2,
+            height_shift_range=0.2,
+            shear_range=0.3,
+            horizontal_flip=True,
+            vertical_flip=True,
+            fill_mode='reflect')
 
     @classmethod
-    def _get_filepaths(cls, painter):
-        base_url_rel = os.path.join(URL_PAINTINGS, painter)
-        base_url_abs = os.path.abspath(base_url_rel)
-        return [os.path.join(base_url_abs, file) for file in os.listdir(base_url_abs)]
-
-    @classmethod
-    def _get_images_cropped(cls, filepaths):
-        try:
-            images = [Image.open(path) for path in filepaths]
-            [img.thumbnail(IMAGE_DIM) for img in images]
-            return images
-        except IOError as e:
-            print(f'Could not load or crop image. Error: {e}')
+    def data_test_generator(cls):
+        return ImageDataGenerator(
+            rotation_range=90,
+            zoom_range=0.2
+        )

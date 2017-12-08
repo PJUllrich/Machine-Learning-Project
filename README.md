@@ -18,3 +18,7 @@
 
 ## Running the CNN
 * Instructions yet to come
+
+## Resources
+https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html
+https://keras.io/
