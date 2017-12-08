@@ -22,3 +22,4 @@
 ## Resources
 https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html
 https://keras.io/
+https://github.com/inejc/painters/blob/master/painters/train_cnn.py

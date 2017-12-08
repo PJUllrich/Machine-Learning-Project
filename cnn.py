@@ -23,7 +23,7 @@ class CNN:
 
         model.add(Flatten())
         model.add(Dense(3))
-        model.add(Activation('softmax'))
+        model.add(Activation('relu'))
 
         model.compile(
             loss='categorical_crossentropy',

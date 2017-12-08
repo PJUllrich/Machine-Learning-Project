@@ -14,11 +14,11 @@ class Trainer:
         model.fit_generator(
             gen_train,
             steps_per_epoch=config.NUM_STEPS_PER_EPOCH,
-            epochs=50,
+            epochs=config.NUM_EPOCH,
             validation_data=gen_val,
             validation_steps=config.NUM_VALIDATION_STEPS
         )
-        model.save_weights('first_try.h5')
+        model.save_weights(config.URL_CNN_MODEL)
 
 
 if __name__ == '__main__':

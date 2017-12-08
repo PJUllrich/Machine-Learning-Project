@@ -14,13 +14,18 @@ PCT_TRAINING = 0.8
 IMAGE_DIM = (150, 150)
 
 # Batch size per epoch
+# WARNING: Batch size must not be larger than number of validation samples!
+# Otherwise, number validation samples / batch size = 0!
 BATCH_SIZE = 10
+
+# Number of epochs
+NUM_EPOCH = 50
 
 # Some static names
 FOLDER_NAME_TRAINING = 'training'
 FOLDER_NAME_VALIDATION = 'validation'
 URL_PAINTINGS = './paintings'
-URL_CNN_MODEL = '../model.h5'
+URL_CNN_MODEL = './model.h5py'
 URL_DATA = './data'
 CLASS_MODE = 'categorical'
 NUM_TRAINING = math.ceil(NUM_PAINTINGS * PCT_TRAINING)
