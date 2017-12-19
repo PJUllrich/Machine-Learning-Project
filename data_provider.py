@@ -19,19 +19,17 @@ class DataProvider:
     @classmethod
     def _get_train_gen(cls):
         generator = cls.data_train_generator()
-        path = os.path.join(config.URL_DATA, config.FOLDER_NAME_TRAINING)
-        return generator.flow_from_directory(
-            path,
-            class_mode=config.CLASS_MODE,
-            target_size=config.IMAGE_DIM,
-            batch_size=config.BATCH_SIZE
-        )
+        return cls._get_gen_flow(generator, config.FOLDER_NAME_TRAINING)
 
     @classmethod
     def _get_val_gen(cls):
         generator = cls.data_val_generator()
-        path = os.path.join(config.URL_DATA, config.FOLDER_NAME_VALIDATION)
-        return generator.flow_from_directory(
+        return cls._get_gen_flow(generator, config.FOLDER_NAME_VALIDATION)
+
+    @classmethod
+    def _get_gen_flow(cls, gen, folder):
+        path = os.path.join(config.URL_DATA, folder)
+        return gen.flow_from_directory(
             path,
             class_mode=config.CLASS_MODE,
             target_size=config.IMAGE_DIM,

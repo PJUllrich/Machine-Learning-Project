@@ -6,11 +6,10 @@ from data_provider import DataProvider
 class Trainer:
     @classmethod
     def train(cls):
-        model = CNN.model()
         gen_train, gen_val = DataProvider.get_generators()
 
+        model = CNN.model()
         model.summary()
-
         model.fit_generator(
             gen_train,
             steps_per_epoch=config.NUM_STEPS_PER_EPOCH,
