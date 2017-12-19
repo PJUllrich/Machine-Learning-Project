@@ -10,16 +10,25 @@ NUM_PAINTINGS = 100
 # Percentage of data for training
 PCT_TRAINING = 0.8
 
-# Dimensions of paintings for CNN input
-IMAGE_DIM = (150, 150)
+# Number of epochs
+NUM_EPOCH = 50
+
+# Penultimate Size
+PENULTIMATE_SIZE = 2048
+
+# Softmax Size
+SOFTMAX_SIZE = 1584
+
+# Convolutional Kernel
+CONV_KERNEL = (3, 3)
 
 # Batch size per epoch
 # WARNING: Batch size must not be larger than number of validation samples!
 # Otherwise, number validation samples / batch size = 0!
-BATCH_SIZE = 10
+BATCH_SIZE = 16
 
-# Number of epochs
-NUM_EPOCH = 50
+# Dimensions of paintings for CNN input
+IMAGE_DIM = (256, 256)
 
 # Some static names
 FOLDER_NAME_TRAINING = 'training'
