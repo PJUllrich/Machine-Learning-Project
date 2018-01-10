@@ -5,7 +5,7 @@ import math
 NUM_PAINTERS = 3
 
 # Number of paintings per painter in sample set
-NUM_PAINTINGS = 100
+NUM_PAINTINGS = 400
 
 # Percentage of data for training
 PCT_TRAINING = 0.8
@@ -16,10 +16,10 @@ NUM_EPOCH = 50
 # Batch size per epoch
 # WARNING: Batch size must be smaller than number of validation samples!
 # Otherwise, number validation samples / batch size = 0!
-BATCH_SIZE = 8
+BATCH_SIZE = 16
 
 # Dimensions of paintings for CNN input
-IMAGE_DIM = (128, 128)
+IMAGE_DIM = (224, 224)
 
 # Penultimate Size
 PENULTIMATE_SIZE = 512

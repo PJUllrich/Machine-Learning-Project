@@ -43,6 +43,7 @@ class DataProvider:
             zoom_range=0.2,
             width_shift_range=0.2,
             height_shift_range=0.2,
+            rescale=1./255,
             shear_range=0.3,
             horizontal_flip=True,
             vertical_flip=True

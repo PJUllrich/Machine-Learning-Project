@@ -6,9 +6,19 @@ from data_provider import DataProvider
 class Trainer:
     @classmethod
     def train(cls):
+        model = CNN.model()
+        cls.fit_model(model)
+
+    @classmethod
+    def train_top_layers(cls):
+        top_layers = CNN.get_top_layers(first_layer=True)
+        top_layers_compiled = CNN.compile_model(top_layers)
+        cls.fit_model(top_layers_compiled, save_full=False)
+
+    @classmethod
+    def fit_model(cls, model, save_full=True):
         gen_train, gen_val = DataProvider.get_generators()
 
-        model = CNN.model()
         model.summary()
         model.fit_generator(
             gen_train,
@@ -20,8 +30,11 @@ class Trainer:
             workers=4,
             shuffle=True
         )
-        model.save(config.URL_CNN_MODEL)
+        if save_full:
+            model.save(config.URL_CNN_MODEL)
+        else:
+            model.save_weights(config.URL_CNN_MODEL)
 
 
 if __name__ == '__main__':
-    Trainer.train()
+    Trainer.train_top_layers()
