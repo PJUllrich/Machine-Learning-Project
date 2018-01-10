@@ -15,9 +15,12 @@ class Trainer:
             steps_per_epoch=config.NUM_STEPS_PER_EPOCH,
             epochs=config.NUM_EPOCH,
             validation_data=gen_val,
-            validation_steps=config.NUM_VALIDATION_STEPS
+            validation_steps=config.NUM_VALIDATION_STEPS,
+            use_multiprocessing=True,
+            workers=4,
+            shuffle=True
         )
-        model.save_weights(config.URL_CNN_MODEL)
+        model.save(config.URL_CNN_MODEL)
 
 
 if __name__ == '__main__':
