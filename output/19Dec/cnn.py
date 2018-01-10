@@ -3,18 +3,17 @@ from keras.layers import Activation, BatchNormalization, Conv2D, Dense, Dropout,
     Flatten, \
     MaxPooling2D, PReLU
 from keras.optimizers import Adam
+from keras.regularizers import l2
 
 import config
 
 
 class CNN:
-
     @classmethod
     def model(cls):
         model = Sequential()
 
-        model.add(Conv2D(16, config.CONV_KERNEL, input_shape=(3, *config.IMAGE_DIM)))
-
+        model.add(cls._init_conv2D())
         model.add(cls._batchNorm())
         model.add(PReLU())
         model.add(cls._conv2D(16))
@@ -54,27 +53,17 @@ class CNN:
         model.add(cls._batchNorm())
         model.add(PReLU())
         model.add(cls._maxPooling2D())
-
-        model.add(cls._conv2D(256))
-        model.add(cls._batchNorm())
-        model.add(PReLU())
-        model.add(cls._conv2D(256))
-        model.add(cls._batchNorm())
-        model.add(PReLU())
-        model.add(cls._conv2D(256))
-        model.add(cls._batchNorm())
-        model.add(PReLU())
-        model.add(cls._maxPooling2D())
         model.add(Dropout(0.5))
 
         model.add(Flatten())
-        model.add(Dense(3))
+        model.add(cls._dense(config.PENULTIMATE_SIZE))
         model.add(cls._batchNorm())
         model.add(PReLU())
 
         model.add(Dropout(0.5))
-        model.add(Dense(3))
+        model.add(cls._dense(config.SOFTMAX_SIZE))
         model.add(cls._batchNorm())
+        model.add(cls._dense(config.NUM_PAINTERS))
         model.add(Activation("softmax"))
 
         model.compile(
@@ -87,7 +76,8 @@ class CNN:
 
     @staticmethod
     def _conv2D(filters):
-        return Conv2D(filters, config.CONV_KERNEL)
+        return Conv2D(filters, config.CONV_KERNEL, padding='same',
+                      kernel_regularizer=l2(config.L2_REG))
 
     @staticmethod
     def _batchNorm():
@@ -96,3 +86,12 @@ class CNN:
     @staticmethod
     def _maxPooling2D():
         return MaxPooling2D(pool_size=(2, 2))
+
+    @staticmethod
+    def _dense(size):
+        return Dense(size, kernel_regularizer=l2(config.L2_REG))
+
+    @staticmethod
+    def _init_conv2D():
+        return Conv2D(16, config.CONV_KERNEL, input_shape=(3, *config.IMAGE_DIM),
+                      kernel_regularizer=l2(config.L2_REG), padding='same')
