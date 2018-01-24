@@ -45,4 +45,4 @@ class Trainer:
 
 
 if __name__ == '__main__':
-    Trainer.train(load=True)
+    Trainer.train()
