@@ -1,3 +1,5 @@
+from keras.models import load_model
+
 import config
 from cnn import CNN
 from data_provider import DataProvider
@@ -5,13 +7,19 @@ from data_provider import DataProvider
 
 class Trainer:
     @classmethod
-    def train(cls):
-        model = CNN.model()
+    def train(cls, load=False):
+        if load:
+            print('Loading model...')
+            model = load_model(config.URL_CNN_MODEL)
+        else:
+            print('Creating new model...')
+            model = CNN.model()
+
         cls.fit_model(model)
 
     @classmethod
     def train_top_layers(cls):
-        top_layers = CNN.get_top_layers(first_layer=True)
+        top_layers = CNN.get_top_layers(input_shape=CNN.input_shape())
         top_layers_compiled = CNN.compile_model(top_layers)
         cls.fit_model(top_layers_compiled, save_full=False)
 
@@ -31,10 +39,10 @@ class Trainer:
             shuffle=True
         )
         if save_full:
-            model.save(config.URL_CNN_MODEL)
+            model.save(config.URL_CNN_MODEL + '-new')
         else:
-            model.save_weights(config.URL_CNN_MODEL)
+            model.save_weights(config.URL_CNN_MODEL + '-new')
 
 
 if __name__ == '__main__':
-    Trainer.train_top_layers()
+    Trainer.train(load=True)

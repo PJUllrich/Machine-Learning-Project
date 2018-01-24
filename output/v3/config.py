@@ -11,7 +11,7 @@ NUM_PAINTINGS = 400
 PCT_TRAINING = 0.8
 
 # Number of epochs
-NUM_EPOCH = 100
+NUM_EPOCH = 50
 
 # Batch size per epoch
 # WARNING: Batch size must be smaller than number of validation samples!

@@ -39,14 +39,14 @@ class DataProvider:
     @classmethod
     def data_train_generator(cls):
         return ImageDataGenerator(
-            rotation_range=180,
+            rotation_range=90,
             zoom_range=0.2,
-            width_shift_range=0.2,
-            height_shift_range=0.2,
-            rescale=1./255,
-            shear_range=0.3,
-            horizontal_flip=True,
-            vertical_flip=True
+            # width_shift_range=0.2,
+            # height_shift_range=0.2,
+            # rescale=1./255,
+            # shear_range=0.3,
+            # horizontal_flip=True,
+            # vertical_flip=True
         )
 
     @classmethod

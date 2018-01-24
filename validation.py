@@ -1,8 +1,9 @@
 from keras.applications import VGG16
-from keras.models import load_model
+from keras.models import load_model, Sequential
 from keras.optimizers import Adam
 
 import config
+from cnn import CNN
 from data_provider import DataProvider
 
 
@@ -15,13 +16,32 @@ class Validator:
 
     @classmethod
     def validate_VGG16(cls):
-        model = VGG16(weights=None, classes=config.NUM_PAINTERS)
-        model.compile(
+        # Create a VGG16 Model without top layers
+        model_base = VGG16(include_top=False, input_shape=CNN.input_shape())
+
+        # Create top layers from own specifications
+        model_top = CNN.get_top_layers(input_shape=model_base.output_shape[1:])
+        model_top.load_weights(config.URL_TOP_MODEL)
+
+        # Combine the 2 models into a full model
+        model_full = Sequential()
+        for layer in model_base.layers:
+            model_full.add(layer)
+        model_full.add(model_top)
+
+        # Lock the pre-trained VGG16 layers
+        for layer in model_full.layers[:25]:
+            layer.trainable = False
+
+        # Compile the full model
+        model_full.compile(
             loss='categorical_crossentropy',
-            optimizer=Adam(lr=0.000074),
+            optimizer=Adam(),
             metrics=['accuracy']
         )
-        cls.run_validation(model)
+
+        # Run the validation
+        cls.run_validation(model_full)
 
     @classmethod
     def run_validation(cls, model):
@@ -36,4 +56,4 @@ class Validator:
 
 
 if __name__ == '__main__':
-    Validator.validate_VGG16()
+    Validator.validate()

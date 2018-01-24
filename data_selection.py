@@ -1,6 +1,7 @@
 import hashlib
 import math
 import os
+import random
 import shutil
 
 import config
@@ -38,7 +39,11 @@ class DataSelector:
     def _get_paintings(cls, painter):
         base_url_rel = os.path.join(config.URL_PAINTINGS, painter)
         base_url_abs = os.path.abspath(base_url_rel)
-        return [os.path.join(base_url_abs, file) for file in os.listdir(base_url_abs)]
+        res = [os.path.join(base_url_abs, file) for file in os.listdir(base_url_abs)]
+
+        random.shuffle(res)
+
+        return res
 
     @classmethod
     def _reduce_data(cls, data):
